@@ -30,7 +30,7 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
-            min-height: 90vh;
+            height: 90vh;
             display: flex;
             flex-direction: column;
         }
@@ -85,6 +85,8 @@
             display: flex;
             flex-direction: column;
             background: rgba(26, 32, 44, 0.2);
+            overflow: hidden;
+            min-height: 0;
         }
 
         .error {
@@ -109,7 +111,7 @@
             overflow-y: auto;
             margin-bottom: 1rem;
             padding-right: 0.5rem;
-            min-height: 200px;
+            min-height: 0;
         }
 
         #chat-box::-webkit-scrollbar {
@@ -465,7 +467,7 @@
                             <i class="fas fa-paper-plane"></i>
                             Send
                         </button>
-                        <button type="button" class="clear-btn" onclick="window.location.href='{{ url_for('clear') }}'">
+                        <button type="button" class="clear-btn" onclick="clearChat()">
                             <i class="fas fa-trash-alt"></i>
                             Clear
                         </button>
@@ -476,6 +478,11 @@
     </div>
 
     <script>
+        // Clear chat function
+        function clearChat() {
+            window.location.href = '/clear';
+        }
+
         // Auto-scroll chat to bottom when new messages are added
         const chatBox = document.getElementById('chat-box');
         if (chatBox) {

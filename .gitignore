@@ -210,3 +210,4 @@ __marimo__/
 logs/
 medical_chatbot.egg-info/
 *.log
+.DS_Store
