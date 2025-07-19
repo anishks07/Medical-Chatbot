@@ -2,46 +2,546 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔍 AI Medical Chatbot</title>
+    <link         .input-section {
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-top: auto;
+            margin-bottom: 0;
+        }ttps://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 2rem; }
-        .chat-container { max-width: 700px; margin: 0 auto; }
-        .message { margin-bottom: 1rem; padding: 0.75rem; border-radius: 10px; }
-        .user { background-color: #d1e7ff; text-align: right; }
-        .assistant { background-color: #f1f1f1; text-align: left; }
-        form { margin-top: 2rem; }
-        textarea { width: 100%; height: 3rem; padding: 0.5rem; font-size: 1rem; }
-        button { padding: 0.5rem 1rem; font-size: 1rem; margin-top: 0.5rem; }
-        .error { color: red; }
-        .clear-btn { margin-top: 1rem; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: #333;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0%, 0%) rotate(0deg); }
+            33% { transform: translate(1%, -1%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.75rem;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 2rem 2rem 0 2rem;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            animation: slideInFromTop 0.5s ease-out;
+        }
+
+        .error i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding-right: 0.5rem;
+        }
+
+        #chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-box::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        #chat-box::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        .message {
+            margin-bottom: 0.8rem;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            position: relative;
+            animation: messageSlideIn 0.5s ease-out;
+            max-width: 85%;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message-content {
+            margin-top: 0.3rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .message strong {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .message strong i {
+            margin-right: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message strong {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .message strong i {
+            margin-right: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .user {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+            border-bottom-right-radius: 8px;
+        }
+
+        .assistant {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            margin-right: auto;
+            text-align: left;
+            border-bottom-left-radius: 8px;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 0.7rem;
+            border-radius: 8px;
+            margin-top: auto;
+            margin-bottom: 0;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+
+        .textarea-container {
+            flex: 1;
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 36px;
+            max-height: 120px;
+            padding: 0.5rem 0.7rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            resize: none;
+            transition: all 0.3s ease;
+            background: white;
+            outline: none;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+
+        textarea:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea::placeholder {
+            color: #adb5bd;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            height: 36px;
+            min-width: 90px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .send-btn:active {
+            transform: translateY(0);
+        }
+
+        .clear-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: stretch;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            height: 36px;
+            min-width: 90px;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .clear-btn:active {
+            transform: translateY(0);
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .main-container {
+                min-height: 95vh;
+                border-radius: 12px;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .chat-container {
+                padding: 1rem;
+            }
+
+            .input-form {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .send-btn {
+                width: 100%;
+            }
+
+            .message {
+                max-width: 95%;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .clear-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .header .subtitle {
+                font-size: 0.75rem;
+            }
+
+            .input-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Loading animation for send button */
+        .send-btn.loading {
+            pointer-events: none;
+        }
+
+        .send-btn.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <h1>🔍 AI Medical Chatbot New Change</h1>
-
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-
-        <div id="chat-box">
-            {% for msg in messages %}
-                <div class="message {{ msg.role }}">
-                    <strong>{{ msg.role|capitalize }}:</strong><br />
-                    {{ msg.content | safe | nl2br }}
-                </div>
-            {% endfor %}
+    <div class="main-container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> AI Medical Chatbot</h1>
+            <p class="subtitle">Your intelligent medical assistant powered by AI</p>
         </div>
+        
+        <div class="chat-container">
 
-        <form method="post" action="{{ url_for('index') }}">
-            <textarea name="prompt" placeholder="Ask a medical question..." required></textarea>
-            <br />
-            <button type="submit">Send</button>
-        </form>
+            {% if error %}
+                <div class="error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+            {% endif %}
 
-        <form method="get" action="{{ url_for('clear') }}">
-            <button type="submit" class="clear-btn">Clear Chat</button>
-        </form>
+            <div id="chat-box">
+                {% for msg in messages %}
+                    <div class="message {{ msg.role }}">
+                        <strong>{% if msg.role == 'user' %}<i class="fas fa-user"></i> You{% else %}<i class="fas fa-stethoscope"></i> Medical AI{% endif %}</strong>
+                        <div class="message-content">{{ msg.content | safe }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="input-section">
+                <form method="post" action="{{ url_for('index') }}" class="input-form">
+                    <div class="textarea-container">
+                        <textarea 
+                            name="prompt" 
+                            placeholder="Ask me any medical question..." 
+                            required></textarea>
+                    </div>
+                    <div class="buttons-container">
+                        <button type="submit" class="send-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send
+                        </button>
+                        <button type="button" class="clear-btn" onclick="window.location.href='{{ url_for('clear') }}';">
+                            <i class="fas fa-trash-alt"></i>
+                            Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Auto-scroll chat to bottom when new messages are added
+        const chatBox = document.getElementById('chat-box');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Process message content to handle line breaks and clean up formatting
+        const messageContents = document.querySelectorAll('.message-content');
+        messageContents.forEach(function(messageDiv) {
+            let content = messageDiv.innerHTML;
+            
+            // Clean up HTML entities
+            content = content.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            
+            // Convert various br tag formats to line breaks
+            content = content.replace(/<br\s*\/?>/gi, '\n');
+            content = content.replace(/&lt;br&gt;/gi, '\n');
+            content = content.replace(/&lt;br\/&gt;/gi, '\n');
+            content = content.replace(/&lt;br \/&gt;/gi, '\n');
+            
+            // Remove extra whitespace and trim
+            content = content.trim();
+            content = content.replace(/\n\s*\n/g, '\n');
+            
+            // Set the cleaned content
+            messageDiv.textContent = content;
+            
+            // Apply proper styling for line breaks
+            messageDiv.style.whiteSpace = 'pre-wrap';
+        });
+
+        // Auto-resize textarea
+        const textarea = document.querySelector('textarea');
+        if (textarea) {
+            // Function to auto-resize textarea
+            function autoResize() {
+                textarea.style.height = 'auto';
+                const scrollHeight = textarea.scrollHeight;
+                const minHeight = 36;
+                const maxHeight = 120;
+                
+                if (scrollHeight <= maxHeight) {
+                    textarea.style.height = Math.max(scrollHeight, minHeight) + 'px';
+                } else {
+                    textarea.style.height = maxHeight + 'px';
+                }
+            }
+            
+            // Auto-resize on input
+            textarea.addEventListener('input', autoResize);
+            
+            // Auto-resize on paste
+            textarea.addEventListener('paste', function() {
+                setTimeout(autoResize, 10);
+            });
+            
+            // Initial resize
+            autoResize();
+            
+            // Focus on textarea when page loads
+            textarea.focus();
+        }
+
+        // Add loading state to send button
+        const form = document.querySelector('.input-form');
+        const sendBtn = document.querySelector('.send-btn');
+        
+        if (form && sendBtn) {
+            form.addEventListener('submit', function() {
+                sendBtn.classList.add('loading');
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            });
+        }
+
+        // Keyboard shortcut: Ctrl/Cmd + Enter to send
+        if (textarea) {
+            textarea.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    form.submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
