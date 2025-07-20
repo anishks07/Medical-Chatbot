@@ -1,20 +1,28 @@
+## Parent image
 FROM python:3.10-slim
 
+## Essential environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+## Work directory inside the docker container
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y build-essential curl && rm -rf /var/lib/apt/lists/*
+## Installing system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml uv.lock ./
-
-RUN pip install uv && uv sync --frozen
-
+## Copying all contents from local to container
 COPY . .
 
+## Install Python dependencies
+RUN pip install --no-cache-dir -e .
+
+## Expose only flask port
 EXPOSE 5000
 
-# Ensure this runs your app directly
+## Run the Flask app
 CMD ["python", "app/application.py"]
 
