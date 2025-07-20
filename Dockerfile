@@ -1,28 +1,30 @@
-## Parent image
+# Use official lightweight Python base image
 FROM python:3.10-slim
 
-## Essential environment variables
+# Environment variables for consistent behavior
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-## Work directory inside the docker container
+# Set working directory inside container
 WORKDIR /app
 
-## Installing system dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-## Copying all contents from local to container
+# Install uv package manager
+RUN pip install uv
+
+# Copy project files
 COPY . .
 
-## Install Python dependencies
-RUN pip install --no-cache-dir -e .
+# Install Python dependencies using uv (from pyproject.toml)
+RUN uv pip install --system .
 
-## Expose only flask port
-EXPOSE 5000
+# Expose appropriate port (update if your app uses a different one)
+EXPOSE 8080
 
-## Run the Flask app
-CMD ["python", "app/application.py"]
-
+# Start your app via uv (adjust CMD if your app doesn't need "bot")
+CMD ["uv", "run", "python", "app/application.py"]
