@@ -28,3 +28,4 @@ EXPOSE 5000
 
 # Start your app via uv (adjust CMD if your app doesn't need "bot")
 CMD ["uv", "run", "python", "app/application.py"]
+anish
