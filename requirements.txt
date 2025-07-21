@@ -1,5 +1,5 @@
-langchain
-langchain_community
+langchain>=0.1.0
+langchain_community>=0.3.0
 langchain_huggingface
 langchain-groq
 faiss-cpu
@@ -7,4 +7,4 @@ pypdf
 python-dotenv
 flask
 huggingface-hub
-
+sentence-transformers>=5.0.0
