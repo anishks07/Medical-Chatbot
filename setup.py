@@ -8,4 +8,4 @@ setup(
     version="0.1.0",
     author="Anish Konda",
     packages=find_packages(),
-    install_requires=requirements,)
+    install_requires=requirements)

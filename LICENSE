@@ -1,0 +1,70 @@
+MIT License
+
+Copyright (c) 2025 Anish Konda
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Third-Party Licenses
+
+This project incorporates several open-source libraries, each with their own licenses:
+
+### LangChain
+- License: MIT License
+- Copyright: Harrison Chase and contributors
+- Repository: https://github.com/langchain-ai/langchain
+
+### Flask
+- License: BSD-3-Clause License
+- Copyright: 2010 Pallets
+- Repository: https://github.com/pallets/flask
+
+### FAISS
+- License: MIT License
+- Copyright: Facebook, Inc. and its affiliates
+- Repository: https://github.com/facebookresearch/faiss
+
+### Sentence Transformers
+- License: Apache License 2.0
+- Copyright: Nils Reimers and contributors
+- Repository: https://github.com/UKPLab/sentence-transformers
+
+### PyPDF
+- License: BSD-3-Clause License
+- Copyright: Mathieu Fenniak and contributors
+- Repository: https://github.com/py-pdf/pypdf
+
+### Python-dotenv
+- License: BSD-3-Clause License
+- Copyright: Saurabh Kumar
+- Repository: https://github.com/theskumar/python-dotenv
+
+## Medical Content Disclaimer
+
+The medical information processed by this application comes from publicly available medical literature including:
+
+- Oxford Handbook of Clinical Medicine (Oxford University Press)
+- Gale Encyclopedia of Medicine (Gale Cengage Learning)
+
+This software is for educational and informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+
+## Data Privacy
+
+This application processes medical literature but does not store personal health information. All user queries are processed locally or through secure API endpoints and are not permanently stored unless explicitly configured by the administrator.
