@@ -305,7 +305,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Anish Konda**
 - GitHub: [@anishks07](https://github.com/anishks07)
-- Email: [Contact Information]
+- Email: anishkst25@gmail.com
 
 ## 🙏 Acknowledgments
 
